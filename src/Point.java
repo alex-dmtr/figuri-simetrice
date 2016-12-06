@@ -2,10 +2,10 @@
  * Created by Alex on 06.12.2016.
  */
 public class Point {
-    public int x, y;
+    public int lin, col;
 
     public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.lin = x;
+        this.col = y;
     }
 }
