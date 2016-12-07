@@ -113,7 +113,18 @@ public class Grid {
 
     public ArrayList<int[][]> solutions = new ArrayList<>();
 
+    private boolean solutionsMirrored(int[][] x, int[][] y) {
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                if (x[i][j] != y[i][j] * (-1))
+                    return false;
+        return true;
+    }
     private void show() {
+        for (int[][] sol: solutions)
+            if (solutionsMirrored(a, sol))
+                return;
+
         for (int i = 0; i < n; i++) {
 
             for (int j = 0; j < n; j++)

@@ -26,9 +26,10 @@ public class Screen extends JPanel {
                     int offsetX = j * cellSize + solutionIndex % columns * (grid.getColumns() * cellSize + cellSize);
                     int offsetY = i * cellSize + solutionIndex / columns * (grid.getRows() * cellSize + cellSize);
 
-                    if (sol[i][j] == 0)
+                    if (sol[i][j] == 0) {
+                        g.setColor(Color.black);
                         g.drawRect(offsetX, offsetY, cellSize, cellSize);
-
+                    }
                     else if (sol[i][j] == 1) {
                         g.setColor(Color.red);
                         g.fillRect(offsetX, offsetY, cellSize, cellSize);
