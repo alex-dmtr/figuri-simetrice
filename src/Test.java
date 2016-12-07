@@ -12,6 +12,55 @@ public class Test {
     private static int[][] a;
     private static int n, m;
 
+    private static int fillPoints(Point start, int color ) {
+        ArrayList<Point> queue = new ArrayList<>();
+
+        int totalPoints = 0;
+
+        queue.add(start);
+        a[start.lin][start.col] = 2 * color;
+        while (queue.size() > 0) {
+            Point current = queue.get(0);
+            queue.remove(0);
+
+            totalPoints++;
+
+            for (Point neighbor : current.getNeighbors())
+                if (0 <= neighbor.lin && neighbor.lin < n && 0 <= neighbor.col && neighbor.col < m) {
+                    if (a[neighbor.lin][neighbor.col] == color) {
+                        queue.add(neighbor);
+
+                        a[neighbor.lin][neighbor.col] = 2 * color;
+                    }
+                }
+        }
+
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                if (a[i][j] == 2 * color)
+                    a[i][j] = color;
+
+        return totalPoints;
+    }
+    private static void checkContinuity() throws Exception {
+        int totalPoints = 0;
+
+        for (Point p: points)
+            if (a[p.lin][p.col] == 1) {
+                totalPoints += fillPoints(p, 1);
+                break;
+            }
+
+        for (Point p: points)
+            if (a[p.lin][p.col] == -1) {
+                totalPoints += fillPoints(p, -1);
+                break;
+            }
+
+        if (totalPoints != points.size())
+            throw new Exception("Areas not continuous");
+
+    }
     private static void check() throws Exception {
 
         // check area
@@ -23,11 +72,12 @@ public class Test {
             throw new Exception("Areas not equal");
 
         // check continuous areas
-        if (points.size() > 2)
-            for (int i = 0; i < n-1; i++)
-                for (int j = 0; j < m-1; j++)
-                    if (!(a[i][j] * a[i][j+1] > 0 || a[i][j] * a[i+1][j] > 0))
-                        throw new Exception("Areas not continuous");
+        checkContinuity();
+//        if (points.size() > 2)
+//            for (int i = 0; i < n-1; i++)
+//                for (int j = 0; j < m-1; j++)
+//                    if (!(a[i][j] * a[i][j+1] > 0 || a[i][j] * a[i+1][j] > 0))
+//                        throw new Exception("Areas not continuous");
 
         // check symmetry
 
@@ -48,7 +98,15 @@ public class Test {
                 break;
             }
         }
-        if (!(horizOk || verticalOk))
+
+        // both horizontal and vertical symmetry
+        boolean turnOverOk = true;
+        for (Point p: points)
+            if (a[p.lin][p.col] * a[n-1-p.lin][m-1-p.col] > 0) {
+                turnOverOk = false;
+                break;
+            }
+        if (!(horizOk || verticalOk || turnOverOk))
             throw new Exception("No symmetry");
 
 
@@ -58,7 +116,7 @@ public class Test {
         for (int i = 0; i < n; i++) {
 
             for (int j = 0; j < n; j++)
-                System.out.printf("%d ", a[i][j]);
+                System.out.printf("%2d ", a[i][j]);
             System.out.printf("\n");
         }
 
