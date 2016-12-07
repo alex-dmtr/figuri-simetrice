@@ -8,27 +8,27 @@ public class Frame extends JFrame {
 
     Screen s;
 
-    public Frame() {
+    public Frame(Grid grid) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setSize(800, 600);
+        setSize(1280, 720);
         setResizable(false);
         setTitle("Graphics");
 
-        init();
+        init(grid);
     }
 
-    public void init() {
+    public void init(Grid grid) {
         setLocationRelativeTo(null);
         setLayout(new GridLayout(1, 1, 0, 0 ));
 
-        s = new Screen();
+        s = new Screen(grid);
         add(s);
 
         setVisible(true);
     }
-
-    public static void main(String[] args) {
-        new Frame();
-    }
+//
+//    public static void main(String[] args) {
+//        new Frame();
+//    }
 }
